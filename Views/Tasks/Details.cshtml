@@ -1,0 +1,80 @@
+﻿@model TaskManagementApplication.Models.Tasks
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Tasks</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssignedTo.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssignedTo.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd class="col-sm-10">
+        @if (Model.Notes != null && Model.Notes.Any())
+        {
+            <div class="form-group">                  
+                <ul>
+                    @foreach (var note in Model.Notes)
+                    {
+                        <li>@note.Content</li>
+                    }
+                </ul>
+            </div>
+        }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Documents)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Documents != null && Model.Documents.Any())
+            {
+                <div class="form-group">
+                    <ul>
+                        @foreach (var doc in Model.Documents)
+                        {
+                            <li>@doc.FilePath</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

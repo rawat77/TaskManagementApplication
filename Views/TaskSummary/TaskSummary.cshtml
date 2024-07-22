@@ -1,0 +1,55 @@
+﻿@model TaskFilterCriteria
+@{
+    ViewData["Title"] = "Filter Tasks";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="FilterTasks" method="post">
+    <div class="form-group">
+        <label asp-for="FromDate" class="control-label"></label>
+        <input asp-for="FromDate" class="form-control" type="date" />
+        <span asp-validation-for="FromDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ToDate" class="control-label"></label>
+        <input asp-for="ToDate" class="form-control" type="date" />
+        <span asp-validation-for="ToDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TeamId" class="control-label"></label>
+        <select asp-for="TeamId" class="form-control" asp-items="ViewBag.Teams" id="TeamDropdown"></select>
+        <span asp-validation-for="TeamId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EmployeeId" class="control-label">Employee</label>
+        <select asp-for="EmployeeId" class="form-control" id="UserDropdown"></select>
+        <span asp-validation-for="EmployeeId" class="text-danger"></span>
+    </div>
+    <div class="form-group form-check">
+        <label class="form-check-label">
+            <input class="form-check-input" asp-for="IsCompleted" /> @Html.DisplayNameFor(model => model.IsCompleted)
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#TeamDropdown').change(function () {
+                var teamId = $(this).val();
+                $.getJSON('/TaskSummary/GetUsersByTeam', { teamId: teamId }, function (data) {
+                    var userDropdown = $('#UserDropdown');
+                    userDropdown.empty();
+                    $.each(data, function (index, user) {
+                        userDropdown.append($('<option/>', {
+                            value: user.id,
+                            text: user.name
+                        }));
+                    });
+                });
+            });
+        });
+    </script>
+}
